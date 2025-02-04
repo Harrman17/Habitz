@@ -1,49 +1,28 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from './components/Header'
 import HabitList from './components/HabitList'
 
 function App() {
 
-  const [habits, setHabits] = useState([
-    {
-      "id": 1,
-      "name": "Drink Water",
-      "start_date": "2025-01-01",
-      "progress": {
-        "2025-01-01": true,
-        "2025-01-02": false,
-        "2025-01-03": true
-      }
-    },
-    {
-      "id": 2,
-      "name": "Gym Workout",
-      "start_date": "2025-01-01",
-      "progress": {
-        "2025-01-01": true,
-        "2025-01-03": true,
-        "2025-01-05": false
-      }
-    },
-    {
-      "id": 3,
-      "name": "Read a Book",
-      "frequency": "daily",
-      "start_date": "2025-01-01",
-      "progress": {
-        "2025-01-01": true,
-        "2025-01-02": true,
-        "2025-01-03": true
-      }
+  const [habits, setHabits] = useState()
+  const [currentDate, setCurrentDate] = useState("loading")
+
+  useEffect(() => {
+    const date = new Date()
+    if (date.getDate() > 10 || date.getMonth() > 10) {
+      setCurrentDate(date.getDate()+"/"+(date.getMonth() + 1)+"/"+date.getFullYear())
+    } else {
+      setCurrentDate("0"+date.getDate()+"/"+"0"+(date.getMonth() + 1)+"/"+date.getFullYear())
     }
-  ]
-  )
+  }, [])
+
+
 
   return (
-    <>
+    <div>
       <Header />
-      <HabitList habits={habits}/>
-    </>
+      <HabitList habits={habits} currentDate={currentDate}/>
+    </div>
   )
 }
 
