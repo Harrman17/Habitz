@@ -4,7 +4,8 @@ import HabitList from './components/HabitList'
 
 function App() {
 
-  const [habits, setHabits] = useState()
+  const [habit, setHabit] = useState()
+  const [addHabitBtn, setAddHabitBtn] = useState(false)
   const [currentDate, setCurrentDate] = useState("loading")
 
   useEffect(() => {
@@ -16,12 +17,16 @@ function App() {
     }
   }, [])
 
+  const addHabit = () => {
+    setAddHabitBtn(prevState => !prevState)
+  }
+
 
 
   return (
     <div>
       <Header />
-      <HabitList habits={habits} currentDate={currentDate}/>
+      <HabitList habit={habit} setHabit={setHabit} currentDate={currentDate} addHabit={addHabit} addHabitBtn={addHabitBtn}/>
     </div>
   )
 }
