@@ -10,7 +10,7 @@ function App() {
 
   useEffect(() => {
     const date = new Date()
-    if (date.getDate() > 10 || date.getMonth() > 10) {
+    if (date.getDate() <= 10 || date.getMonth() <= 10) {
       setCurrentDate(date.getDate()+"/"+(date.getMonth() + 1)+"/"+date.getFullYear())
     } else {
       setCurrentDate("0"+date.getDate()+"/"+"0"+(date.getMonth() + 1)+"/"+date.getFullYear())
@@ -19,6 +19,7 @@ function App() {
 
   const addHabit = () => {
     setAddHabitBtn(prevState => !prevState)
+    setHabit("")
   }
 
 
