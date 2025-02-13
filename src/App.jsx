@@ -9,15 +9,16 @@ function App() {
   const [currentDate, setCurrentDate] = useState("loading")
 
   useEffect(() => {
-    const date = new Date()
-    if (date.getDate() <= 10 || date.getMonth() <= 10) {
-      setCurrentDate(date.getDate()+"/"+(date.getMonth() + 1)+"/"+date.getFullYear())
-    } else {
-      setCurrentDate("0"+date.getDate()+"/"+"0"+(date.getMonth() + 1)+"/"+date.getFullYear())
-    }
+    const date = new Date();
+    const day = String(date.getDate()).padStart(2, '0')
+    const month = String(date.getMonth() + 1).padStart(2, '0')  
+    const year = date.getFullYear()
+
+
+    setCurrentDate(`${day}/${month}/${year}`)
   }, [])
 
-  const addHabit = () => {
+  const openAddHabit = () => {
     setAddHabitBtn(prevState => !prevState)
     setHabit("")
   }
@@ -27,7 +28,7 @@ function App() {
   return (
     <div>
       <Header />
-      <HabitList habit={habit} setHabit={setHabit} currentDate={currentDate} addHabit={addHabit} addHabitBtn={addHabitBtn}/>
+      <HabitList habit={habit} setHabit={setHabit} currentDate={currentDate} openAddHabit={openAddHabit} addHabitBtn={addHabitBtn}/>
     </div>
   )
 }
