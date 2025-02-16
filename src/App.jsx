@@ -5,6 +5,7 @@ import HabitList from './components/HabitList'
 function App() {
 
   const [habit, setHabit] = useState()
+  const [allHabits, setAllHabits] = useState([])
   const [addHabitBtn, setAddHabitBtn] = useState(false)
   const [currentDate, setCurrentDate] = useState("loading")
 
@@ -23,12 +24,18 @@ function App() {
     setHabit("")
   }
 
+  function addHabit() {
+    const habitMap = new Map()
+    habitMap.set("habit_name", habit)
+    habitMap.set("start_date", currentDate)
+    setAllHabits(prevHabits => [...prevHabits, habitMap])
+    console.log(allHabits)
+  }
 
-
-  return (
+return (
     <div>
       <Header />
-      <HabitList habit={habit} setHabit={setHabit} currentDate={currentDate} openAddHabit={openAddHabit} addHabitBtn={addHabitBtn}/>
+      <HabitList habit={habit} setHabit={setHabit} currentDate={currentDate} openAddHabit={openAddHabit} addHabitBtn={addHabitBtn} addHabit={addHabit} allHabits={allHabits}/>
     </div>
   )
 }
