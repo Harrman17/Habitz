@@ -17,13 +17,13 @@ function HabitList({ currentDate, openAddHabit, addHabitBtn, habit, setHabit, ad
 
 
       <div className='self-start ml-21 mt-8 flex flex-col gap-x-2'>
-        <div className='flex items-center bg-test'>
+        <div className='flex items-center'>
           <ul>
             {allHabits.map((map, index) => {
               return (
-                  <li key={index}>
-                    <input type='checkbox' />
-                    {map.get("habit_name")}
+                  <li key={index} className='flex items-center gap-x-4 mb-3'>
+                    <button className='bg-accent h-8 w-8 rounded-md'></button>
+                    <span className='font-semibold'>{map.get("habit_name")}</span>
                   </li>
               )
             })
