@@ -28,14 +28,31 @@ function App() {
     const habitMap = new Map()
     habitMap.set("habit_name", habit)
     habitMap.set("start_date", currentDate)
+    habitMap.set("status", false)
     setAllHabits(prevHabits => [...prevHabits, habitMap])
-    console.log(allHabits)
+  }
+
+  function completeHabit(index) {
+    console.log(index)
+    setAllHabits(prevHabits => {
+      const currentHabits = [...prevHabits]
+
+      const updatedHabit = new Map(currentHabits[index]) // creates new map of the current habit we're ticking off
+
+      updatedHabit.set("status", !updatedHabit.get("status"))
+
+      currentHabits[index] = updatedHabit // sets the habit we're ticking off to opposite status
+
+      return currentHabits
+
+    })
+
   }
 
 return (
     <div>
       <Header />
-      <HabitList habit={habit} setHabit={setHabit} currentDate={currentDate} openAddHabit={openAddHabit} addHabitBtn={addHabitBtn} addHabit={addHabit} allHabits={allHabits}/>
+      <HabitList habit={habit} setHabit={setHabit} currentDate={currentDate} openAddHabit={openAddHabit} addHabitBtn={addHabitBtn} addHabit={addHabit} allHabits={allHabits} completeHabit={completeHabit}/>
     </div>
   )
 }

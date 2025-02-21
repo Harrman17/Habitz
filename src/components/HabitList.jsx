@@ -1,11 +1,11 @@
 import React from 'react'
-import { faPlus, faX } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faX, faCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 
 
-function HabitList({ currentDate, openAddHabit, addHabitBtn, habit, setHabit, addHabit, allHabits}) {
+function HabitList({ currentDate, openAddHabit, addHabitBtn, habit, setHabit, addHabit, allHabits, completeHabit}) {
 
   return (
     <div className='bg-main text-accent min-h-screen flex flex-col items-center pt-10'>
@@ -22,7 +22,9 @@ function HabitList({ currentDate, openAddHabit, addHabitBtn, habit, setHabit, ad
             {allHabits.map((map, index) => {
               return (
                   <li key={index} className='flex items-center gap-x-4 mb-3'>
-                    <button className='bg-accent h-8 w-8 rounded-md'></button>
+                    <button className='bg-accent h-8 w-8 rounded-md group' onClick={() => completeHabit(index)}>
+                      <FontAwesomeIcon icon={faCheck} className='text-main opacity-0 group-hover:opacity-50 transition-opacity'/>
+                    </button>
                     <span className='font-semibold'>{map.get("habit_name")}</span>
                   </li>
               )
@@ -46,7 +48,6 @@ function HabitList({ currentDate, openAddHabit, addHabitBtn, habit, setHabit, ad
         <button onClick={addHabit} className={`${habit ? 'bg-accent' : 'bg-gray-300 opacity-30 cursor-not-allowed'} w-30 h-7 text-main text-sm rounded-sm self-end mt-3`}>Add Habit</button>
         }
       </div>
-
     </div>
   )
 }
