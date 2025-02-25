@@ -21,11 +21,11 @@ function HabitList({ currentDate, openAddHabit, addHabitBtn, habit, setHabit, ad
           <ul>
             {allHabits.map((map, index) => {
               return (
-                  <li key={index} className='flex items-center gap-x-4 mb-3'>
-                    <button className='bg-accent h-8 w-8 rounded-md group' onClick={() => completeHabit(index)}>
-                      <FontAwesomeIcon icon={faCheck} className='text-main opacity-0 group-hover:opacity-50 transition-opacity'/>
+                  <li key={allHabits[index].get("ID")} className='flex items-center gap-x-4 mb-3'>
+                    <button className='bg-accent h-8 w-8 rounded-md group' onClick={() => completeHabit(allHabits[index].get("ID"))}>
+                      <FontAwesomeIcon icon={faCheck} className={`text-main opacity-0 transition-opacity ${allHabits[index].get("status") ? 'opacity-100' : 'group-hover:opacity-50'}`}/>
                     </button>
-                    <span className='font-semibold'>{map.get("habit_name")}</span>
+                    <span className={`font-semibold ${allHabits[index].get("status") ? 'line-through' : ''}`}>{map.get("habit_name")}</span>
                   </li>
               )
             })
@@ -40,7 +40,13 @@ function HabitList({ currentDate, openAddHabit, addHabitBtn, habit, setHabit, ad
             <input 
             className='bg-accent text-main rounded-sm pl-2 focus:outline-accent h-8 w-46' 
             placeholder='Habit name...' 
-            value={habit} onChange={(e) => setHabit(e.target.value)} 
+            value={habit} onChange={(e) => setHabit(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && habit) {
+                addHabit()
+              }
+            }}
+            required 
             />
           }
         </div>
