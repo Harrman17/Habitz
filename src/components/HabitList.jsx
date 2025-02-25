@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 
-function HabitList({ currentDate, openAddHabit, addHabitBtn, habit, setHabit, addHabit, allHabits, completeHabit}) {
+function HabitList({ currentDate, openAddHabit, addHabitBtn, habit, setHabit, addHabit, allHabits, completeHabit, deleteHabit}) {
 
   return (
     <div className='bg-main text-accent min-h-screen flex flex-col items-center pt-10'>
@@ -23,7 +23,10 @@ function HabitList({ currentDate, openAddHabit, addHabitBtn, habit, setHabit, ad
               return (
                   <li key={allHabits[index].get("ID")} className='flex items-center gap-x-4 mb-3'>
                     <button className='bg-accent h-8 w-8 rounded-md group' onClick={() => completeHabit(allHabits[index].get("ID"))}>
-                      <FontAwesomeIcon icon={faCheck} className={`text-main opacity-0 transition-opacity ${allHabits[index].get("status") ? 'opacity-100' : 'group-hover:opacity-50'}`}/>
+                      {deleteHabit ? 
+                      (<FontAwesomeIcon icon={faX} className='text-test' />)
+                      : 
+                      (<FontAwesomeIcon icon={faCheck} className={`text-main opacity-0 transition-opacity ${allHabits[index].get("status") ? 'opacity-100' : 'group-hover:opacity-50'}`}/>) }
                     </button>
                     <span className={`font-semibold ${allHabits[index].get("status") ? 'line-through' : ''}`}>{map.get("habit_name")}</span>
                   </li>
