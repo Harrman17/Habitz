@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router'
 import Header from './components/Header'
 import HabitList from './components/HabitList'
+import Calendar from './components/Calendar'
+
 
 function App() {
 
@@ -29,6 +32,11 @@ function App() {
   function addHabit() {
     setHabitID(prevCount => prevCount + 1)
     const habitMap = new Map()
+    
+    if (!habit.trim()) {
+      return
+    }
+
     habitMap.set("ID", habitID)
     habitMap.set("habit_name", habit)
     habitMap.set("start_date", currentDate)
@@ -66,22 +74,29 @@ function App() {
 
 
 return (
-    <div>
-      <Header 
-      deleteHabits={deleteHabits}
-      />
-      <HabitList 
-      habit={habit} 
-      setHabit={setHabit} 
-      currentDate={currentDate} 
-      openAddHabit={openAddHabit} 
-      addHabitBtn={addHabitBtn} 
-      addHabit={addHabit} 
-      allHabits={allHabits} 
-      completeHabit={completeHabit}
-      deleteHabit={deleteHabit}
-      />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={
+      <>
+        <Header 
+        deleteHabits={deleteHabits}/>
+        <HabitList 
+        habit={habit} 
+        setHabit={setHabit} 
+        currentDate={currentDate} 
+        openAddHabit={openAddHabit} 
+        addHabitBtn={addHabitBtn} 
+        addHabit={addHabit} 
+        allHabits={allHabits} 
+        completeHabit={completeHabit}
+        deleteHabit={deleteHabit}/>
+      </>
+      } />
+      <Route path="calendar" element={
+        <Calendar />
+      }/>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
