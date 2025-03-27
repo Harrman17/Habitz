@@ -9,7 +9,7 @@ function App() {
 
   const [habit, setHabit] = useState()
   const [habitID, setHabitID] = useState(0)
-  const [allHabits, setAllHabits] = useState([])
+  const [habitsObject, setHabitsObject] = useState({}) // all the habits but with dates as key
   const [addHabitBtn, setAddHabitBtn] = useState(false)
   const [currentDate, setCurrentDate] = useState("loading")
   const [deleteHabit, setDeleteHabit] = useState(false)
@@ -39,38 +39,58 @@ function App() {
 
     habitMap.set("ID", habitID)
     habitMap.set("habit_name", habit)
-    habitMap.set("start_date", currentDate)
     habitMap.set("status", false)
+
     if (habit) {
-    setAllHabits(prevHabits => [...prevHabits, habitMap])
-    setHabit("")
+
+      setHabitsObject(prev => ({
+        ...prev,
+        [currentDate]: [...(prev[currentDate] || []), habitMap]
+      }))
+
+      setHabit("")
     }
-    console.log(allHabits)
+    console.log(habitsObject)
   }
 
-  function completeHabit(ID) {
 
-      setAllHabits((prevHabits) => {
-        if (deleteHabit) {
-          return prevHabits.filter((habit) => habit.get("ID") !== ID)
-        } else {
-        return prevHabits.map((habit) => { // so iterate through the currentHabits
-          if (habit.get("ID") == ID) { // if the habits ID matches the one being clicked on
-            const updatedHabit = new Map(habit) // create a new map of the habit
-            updatedHabit.set("status", !updatedHabit.get("status")) // set the status of this newly created habit to the opposite
+  function completeHabit(ID) { 
 
-            return updatedHabit
-          }
-          return habit // returns habit by default if the ID does not === the ones being passed in/clicked on -- returns unchanged habit
-        })
-       } 
+    setHabitsObject(prev => ({
+      ...prev,
+      [currentDate]: prev[currentDate].map((habit) => {
+        if (habit.get("ID") === ID) {
+          const updatedHabit = new Map(habit)
+          updatedHabit.set("status", !updatedHabit.get("status"))
+          return updatedHabit
+        }
+        return habit
       })
-
+    })
+   )
   }
 
-  function deleteHabits() {
+
+  function removeHabit(ID) {
+    if (deleteHabit) {
+      setHabitsObject((prev) => {
+
+        const updatedHabits = prev[currentDate].filter(habit => habit.get("ID") !== ID)
+        console.log(updatedHabits)
+
+        const updatedObject = {...prev, [currentDate]: updatedHabits }
+
+        return updatedObject
+
+      })
+    }
+  }
+
+  function deleteHabitsToggle() { 
     setDeleteHabit(prevState => !prevState)
   }
+
+
 
 
 return (
@@ -79,7 +99,8 @@ return (
         <Route path="/" element={
       <>
         <Header 
-        deleteHabits={deleteHabits}/>
+        deleteHabitsToggle={deleteHabitsToggle}
+        showIcons={true}/>
         <HabitList 
         habit={habit} 
         setHabit={setHabit} 
@@ -87,13 +108,17 @@ return (
         openAddHabit={openAddHabit} 
         addHabitBtn={addHabitBtn} 
         addHabit={addHabit} 
-        allHabits={allHabits} 
+        habitsObject={habitsObject} 
         completeHabit={completeHabit}
-        deleteHabit={deleteHabit}/>
+        deleteHabit={deleteHabit}
+        removeHabit={removeHabit}/>
       </>
       } />
       <Route path="calendar" element={
-        <Calendar />
+        <>
+          <Header showIcons={false}/>
+          <Calendar />
+        </>
       }/>
       </Routes>
     </BrowserRouter>

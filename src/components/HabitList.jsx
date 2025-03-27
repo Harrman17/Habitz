@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 
-function HabitList({ currentDate, openAddHabit, addHabitBtn, habit, setHabit, addHabit, allHabits, completeHabit, deleteHabit}) {
+function HabitList({ currentDate, openAddHabit, addHabitBtn, habit, setHabit, addHabit, completeHabit, deleteHabit, habitsObject, removeHabit}) {
+
 
   return (
     <div className='bg-main text-accent min-h-screen flex flex-col items-center pt-10'>
@@ -19,16 +20,22 @@ function HabitList({ currentDate, openAddHabit, addHabitBtn, habit, setHabit, ad
       <div className='self-start ml-21 mt-8 flex flex-col gap-x-2'>
         <div className='flex items-center'>
           <ul>
-            {allHabits.map((map, index) => {
+            {(habitsObject[currentDate] || []).map((map) => {
               return (
-                  <li key={allHabits[index].get("ID")} className='flex items-center gap-x-4 mb-3'>
-                    <button className='bg-accent h-8 w-8 rounded-md group' onClick={() => completeHabit(allHabits[index].get("ID"))}>
+                  <li className='flex items-center gap-x-4 mb-3' key={map.get("ID")}>
+                    <button className='bg-accent h-8 w-8 rounded-md group' onClick={() => {
+                      if (deleteHabit) {
+                        removeHabit(map.get("ID"))
+                      } else {
+                        completeHabit(map.get("ID"))
+                      }
+                    }}>
                       {deleteHabit ? 
-                      (<FontAwesomeIcon icon={faX} className='text-test' />)
+                      (<FontAwesomeIcon icon={faX} className='text-test'/>)
                       : 
-                      (<FontAwesomeIcon icon={faCheck} className={`text-main opacity-0 transition-opacity ${allHabits[index].get("status") ? 'opacity-100' : 'group-hover:opacity-50'}`}/>) }
+                      (<FontAwesomeIcon icon={faCheck} className={`text-main opacity-0 transition-opacity ${map.get("status") ? 'opacity-100' : 'group-hover:opacity-50'}`}/>) }
                     </button>
-                    <span className={`font-semibold ${allHabits[index].get("status") ? 'line-through' : ''}`}>{map.get("habit_name")}</span>
+                    <span className={`font-semibold ${map.get("status") ? 'line-through' : ''}`}>{map.get("habit_name")}</span>
                   </li>
               )
             })
