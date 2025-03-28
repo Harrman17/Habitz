@@ -117,7 +117,7 @@ return (
       <Route path="calendar" element={
         <>
           <Header showIcons={false}/>
-          <Calendar />
+          <Calendar habitsObject={habitsObject}/>
         </>
       }/>
       </Routes>

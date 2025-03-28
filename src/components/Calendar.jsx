@@ -2,24 +2,31 @@ import React from 'react'
 import { DayPicker } from "react-day-picker"
 import "react-day-picker/style.css"
 
-function Calendar() {
+function Calendar({ habitsObject }) {
+
+  let year, month
 
 
-    const specialDays = {
-      highlighted: new Date(2024, 0, 15), // March 15, 2024 (Month is 0-based)
+
+  if (Object.keys(habitsObject).length > 0) {
+    const habitDates = Object.keys(habitsObject) // gets all dates in the object in an array
+    const mostRecentDate = habitDates[habitDates.length - 1]
+
+    if (mostRecentDate) {
+      const [dayStr, monthStr, yearStr] = mostRecentDate.split("/")
+      year = parseInt(yearStr, 10)
+      month = parseInt(monthStr, 10) - 1
     }
-
+  }
 
 
   return (
     <div className='h-screen bg-main flex flex-col items-center'>
       <DayPicker 
-      month={new Date(2024, 0)} 
+      month={year && month ? new Date(year, month) : new Date()} 
       className='bg-darkaccent p-4 rounded-3xl text-accent' 
       onSelect={() => console.log("selected working g")} 
       mode="single"
-      modifiers={specialDays} 
-      modifiersClassNames={{ highlighted: "bg-gray-500 rounded-2xl" }}
       />
     </div>
   )
