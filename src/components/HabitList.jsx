@@ -20,7 +20,7 @@ function HabitList({ currentDate, openAddHabit, addHabitBtn, habit, setHabit, ad
       <div className='self-start ml-21 mt-8 flex flex-col gap-x-2'>
         <div className='flex items-center'>
           <ul>
-            {(habitsObject[currentDate] || []).map((map) => {
+            {(habitsObject[currentDate] || []).map((map) => { // map == habit object
               return (
                   <li className='flex items-center gap-x-4 mb-3' key={map.get("ID")}>
                     <button className='bg-accent h-8 w-8 rounded-md group' onClick={() => {

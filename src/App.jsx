@@ -9,7 +9,27 @@ function App() {
 
   const [habit, setHabit] = useState()
   const [habitID, setHabitID] = useState(0)
-  const [habitsObject, setHabitsObject] = useState({}) // all the habits but with dates as key
+  const [habitsObject, setHabitsObject] = useState({
+    "28/03/2025": [
+      new Map([
+        ["ID", 1],
+        ["habit_name", "Workout"],
+        ["status", false]
+      ]),
+      new Map([
+        ["ID", 2],
+        ["habit_name", "Read"],
+        ["status", false]
+      ])
+    ],
+    "22/04/2025": [
+      new Map([
+        ["ID", 3],
+        ["habit_name", "Code"],
+        ["status", false]
+      ])
+    ]
+  }) // all the habits but with dates as key
   const [addHabitBtn, setAddHabitBtn] = useState(false)
   const [currentDate, setCurrentDate] = useState("loading")
   const [deleteHabit, setDeleteHabit] = useState(false)

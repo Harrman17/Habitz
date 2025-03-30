@@ -4,30 +4,32 @@ import "react-day-picker/style.css"
 
 function Calendar({ habitsObject }) {
 
-  let year, month
-
-
+  let habitDates
 
   if (Object.keys(habitsObject).length > 0) {
-    const habitDates = Object.keys(habitsObject) // gets all dates in the object in an array
-    const mostRecentDate = habitDates[habitDates.length - 1]
-
-    if (mostRecentDate) {
-      const [dayStr, monthStr, yearStr] = mostRecentDate.split("/")
-      year = parseInt(yearStr, 10)
-      month = parseInt(monthStr, 10) - 1
-    }
+    habitDates = Object.keys(habitsObject) // gets all dates in the object in an array
   }
 
 
-  return (
-    <div className='h-screen bg-main flex flex-col items-center'>
-      <DayPicker 
-      month={year && month ? new Date(year, month) : new Date()} 
-      className='bg-darkaccent p-4 rounded-3xl text-accent' 
-      onSelect={() => console.log("selected working g")} 
-      mode="single"
-      />
+  return ( // need to create a map that 
+
+    <div className='h-screen bg-main flex flex-col items-center gap-10'>
+    {(habitDates || []).map((date) => {
+
+        const [dayStr, monthStr, yearStr] = date.split("/")
+        const year = parseInt(yearStr, 10)
+        const month = parseInt(monthStr, 10)
+
+        return (
+        <DayPicker 
+        month={year && month ? new Date(year, month) : new Date()} 
+        className='bg-darkaccent p-4 rounded-3xl text-accent' 
+        onSelect={() => console.log("selected working g")} 
+        mode="single"
+        />
+        )
+      })
+    }
     </div>
   )
 }
