@@ -9,29 +9,11 @@ function App() {
 
   const [habit, setHabit] = useState()
   const [habitID, setHabitID] = useState(0)
-  const [habitsObject, setHabitsObject] = useState({
-    "28/03/2025": [
-      new Map([
-        ["ID", 1],
-        ["habit_name", "Workout"],
-        ["status", false]
-      ]),
-      new Map([
-        ["ID", 2],
-        ["habit_name", "Read"],
-        ["status", false]
-      ])
-    ],
-    "22/04/2025": [
-      new Map([
-        ["ID", 3],
-        ["habit_name", "Code"],
-        ["status", false]
-      ])
-    ]
-  }) // all the habits but with dates as key
+  const [habitsObject, setHabitsObject] = useState({})
+  // all the habits but with dates as key
+  
   const [addHabitBtn, setAddHabitBtn] = useState(false)
-  const [currentDate, setCurrentDate] = useState("loading")
+  const [currentDate, setCurrentDate] = useState()
   const [deleteHabit, setDeleteHabit] = useState(false)
 
   useEffect(() => {
@@ -48,34 +30,69 @@ function App() {
     setAddHabitBtn(prevState => !prevState)
     setHabit("")
   }
+  
+
+  const today = new Date()
+  const day = String(today.getDate()).padStart(2, '0')
+  const month = String(today.getMonth() + 1).padStart(2, '0')
+  const year = today.getFullYear()
+
+  const fullDate = `${day}/${month}/${year}`  
+  const monthKey = `${month}/${year}`   
+
 
   function addHabit() {
-    setHabitID(prevCount => prevCount + 1)
-    const habitMap = new Map()
-    
+
     if (!habit.trim()) {
       return
     }
 
-    habitMap.set("ID", habitID)
-    habitMap.set("habit_name", habit)
-    habitMap.set("status", false)
 
-    if (habit) {
-
-      setHabitsObject(prev => ({
-        ...prev,
-        [currentDate]: [...(prev[currentDate] || []), habitMap]
-      }))
-
-      setHabit("")
+  const newHabitID = habitID + 1;
+  setHabitID(newHabitID);
+  
+    const habitObject = {
+      ID: habitID,
+      habit_name: habit,
+      status: false
     }
-    console.log(habitsObject)
+
+
+    if (!habitsObject[monthKey]) {
+      habitsObject[monthKey] = {}
+    }
+
+    if (!habitsObject[monthKey][fullDate]) {
+      habitsObject[monthKey][fullDate] = []
+    }
+
+     
+  
+    setHabitsObject(prev => {
+      const updated = { ...prev }
+  
+
+      updated[monthKey] = {
+        ...(prev[monthKey] || {}),
+        [fullDate]: [...(prev[monthKey]?.[fullDate] || []), habitObject]
+      }
+    
+      return updated
+    })
+  
+    setHabit("")
   }
+  
+
+  useEffect(() => {
+    console.log(habitsObject)
+  }, [habitsObject])
+
+
+
 
 
   function completeHabit(ID) { 
-
     setHabitsObject(prev => ({
       ...prev,
       [currentDate]: prev[currentDate].map((habit) => {
@@ -106,6 +123,8 @@ function App() {
     }
   }
 
+
+
   function deleteHabitsToggle() { 
     setDeleteHabit(prevState => !prevState)
   }
@@ -131,7 +150,9 @@ return (
         habitsObject={habitsObject} 
         completeHabit={completeHabit}
         deleteHabit={deleteHabit}
-        removeHabit={removeHabit}/>
+        removeHabit={removeHabit}
+        monthKey={monthKey}
+        />
       </>
       } />
       <Route path="calendar" element={
@@ -146,3 +167,4 @@ return (
 }
 
 export default App
+

@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 
-function HabitList({ currentDate, openAddHabit, addHabitBtn, habit, setHabit, addHabit, completeHabit, deleteHabit, habitsObject, removeHabit}) {
+function HabitList({ currentDate, openAddHabit, addHabitBtn, habit, setHabit, addHabit, completeHabit, deleteHabit, habitsObject, removeHabit, monthKey }) {
 
 
   return (
@@ -20,22 +20,22 @@ function HabitList({ currentDate, openAddHabit, addHabitBtn, habit, setHabit, ad
       <div className='self-start ml-21 mt-8 flex flex-col gap-x-2'>
         <div className='flex items-center'>
           <ul>
-            {(habitsObject[currentDate] || []).map((map) => { // map == habit object
+            {(habitsObject[monthKey] && habitsObject[monthKey][currentDate] ? habitsObject[monthKey][currentDate] : []).map((map) => { // map == habit object
               return (
-                  <li className='flex items-center gap-x-4 mb-3' key={map.get("ID")}>
+                  <li className='flex items-center gap-x-4 mb-3' key={map["ID"]}>
                     <button className='bg-accent h-8 w-8 rounded-md group' onClick={() => {
                       if (deleteHabit) {
-                        removeHabit(map.get("ID"))
+                        removeHabit(map["ID"])
                       } else {
-                        completeHabit(map.get("ID"))
+                        completeHabit(map["ID"])
                       }
                     }}>
                       {deleteHabit ? 
                       (<FontAwesomeIcon icon={faX} className='text-test'/>)
                       : 
-                      (<FontAwesomeIcon icon={faCheck} className={`text-main opacity-0 transition-opacity ${map.get("status") ? 'opacity-100' : 'group-hover:opacity-50'}`}/>) }
+                      (<FontAwesomeIcon icon={faCheck} className={`text-main opacity-0 transition-opacity ${map["status"] ? 'opacity-100' : 'group-hover:opacity-50'}`}/>) }
                     </button>
-                    <span className={`font-semibold ${map.get("status") ? 'line-through' : ''}`}>{map.get("habit_name")}</span>
+                    <span className={`font-semibold ${map["status"] ? 'line-through' : ''}`}>{map["habit_name"]}</span>
                   </li>
               )
             })
