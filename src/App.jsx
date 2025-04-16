@@ -73,7 +73,7 @@ function App() {
   
 
       updated[monthKey] = {
-        ...(prev[monthKey] || {}),
+        ...prev[monthKey] || {},
         [fullDate]: [...(prev[monthKey]?.[fullDate] || []), habitObject]
       }
     
@@ -93,31 +93,31 @@ function App() {
 
 
   function completeHabit(ID) { 
-    setHabitsObject(prev => ({
-      ...prev,
-      [currentDate]: prev[currentDate].map((habit) => {
-        if (habit.get("ID") === ID) {
-          const updatedHabit = new Map(habit)
-          updatedHabit.set("status", !updatedHabit.get("status"))
-          return updatedHabit
-        }
-        return habit
-      })
+    setHabitsObject(prev => {
+      const updated = { ...prev }
+
+      updated[monthKey] = {
+        ...prev[monthKey],
+        [currentDate]: prev[monthKey][currentDate].map(habit => {
+          return habit.ID === ID ? { ...habit, status: !habit.status } : habit
+        })
+      }
+      return updated
     })
-   )
   }
 
 
   function removeHabit(ID) {
     if (deleteHabit) {
-      setHabitsObject((prev) => {
+      setHabitsObject(prev => {
+        const updated = { ...prev }
 
-        const updatedHabits = prev[currentDate].filter(habit => habit.get("ID") !== ID)
-        console.log(updatedHabits)
+        updated[monthKey] = {
+          ...prev[monthKey],
+          [currentDate]: prev[monthKey][currentDate].filter(habit => habit.ID !== ID)
+        }
 
-        const updatedObject = {...prev, [currentDate]: updatedHabits }
-
-        return updatedObject
+        return updated
 
       })
     }
