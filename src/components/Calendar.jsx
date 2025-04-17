@@ -1,30 +1,36 @@
 import React from 'react'
 import { DayPicker } from "react-day-picker"
 import "react-day-picker/style.css"
+import { useNavigate } from 'react-router'
 
 function Calendar({ habitsObject }) {
 
-  let habitDates
+  const navigate = useNavigate()
 
-  if (Object.keys(habitsObject).length > 0) {
-    habitDates = Object.keys(habitsObject) // gets all dates in the object in an array
+
+
+  let habitDates = Object.keys(habitsObject)
+
+  function handleDayClick(day) {
+    const formatted = day.toLocaleDateString("en-GB").replace(/\//g, "-")
+    navigate(`/habit/${formatted}`)
   }
 
 
-  return ( // need to create a map that 
+  return (
 
-    <div className='h-screen bg-main flex flex-col items-center gap-10'>
+    <div className='h-screen-full bg-main flex flex-col items-center gap-10'>
     {(habitDates || []).map((date) => {
 
-        const [dayStr, monthStr, yearStr] = date.split("/")
+        const [monthStr, yearStr] = date.split("/")
         const year = parseInt(yearStr, 10)
         const month = parseInt(monthStr, 10)
 
         return (
         <DayPicker 
-        month={year && month ? new Date(year, month) : new Date()} 
+        month={year && month ? new Date(year, month - 1) : new Date()} 
         className='bg-darkaccent p-4 rounded-3xl text-accent' 
-        onSelect={() => console.log("selected working g")} 
+        onSelect={handleDayClick} 
         mode="single"
         />
         )
