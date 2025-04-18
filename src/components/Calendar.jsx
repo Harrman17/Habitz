@@ -13,7 +13,7 @@ function Calendar({ habitsObject }) {
 
   function handleDayClick(day) {
     const formatted = day.toLocaleDateString("en-GB").replace(/\//g, "-")
-    navigate(`/habit/${formatted}`)
+    navigate(`/${formatted}`)
   }
 
 

@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 
-function HabitList({ currentDate, openAddHabit, addHabitBtn, habit, setHabit, addHabit, completeHabit, deleteHabit, habitsObject, removeHabit, monthKey }) {
+function HabitList({ currentDate, openAddHabit, addHabitBtn, habit, setHabit, addHabit, completeHabit, deleteHabit, habitsObject, removeHabit, monthKey, formattedDate }) {
 
 
   return (
@@ -13,14 +13,14 @@ function HabitList({ currentDate, openAddHabit, addHabitBtn, habit, setHabit, ad
 
       <div className='flex gap-1 items-center'>
         <h1 className='text-5xl border-b pb-1'>Today</h1>
-        <h1 className='mt-6 border-b pb-1'>{currentDate}</h1>        
+        <h1 className='mt-6 border-b pb-1'>{formattedDate ? formattedDate : currentDate}</h1>        
       </div>
 
 
       <div className='self-start ml-21 mt-8 flex flex-col gap-x-2'>
         <div className='flex items-center'>
           <ul>
-            {(habitsObject[monthKey] && habitsObject[monthKey][currentDate] ? habitsObject[monthKey][currentDate] : []).map((map) => { // map == habit object
+            {(habitsObject[monthKey] && habitsObject[monthKey][formattedDate ? formattedDate : currentDate] ? habitsObject[monthKey][formattedDate ? formattedDate : currentDate] : []).map((map) => { // map == habit object
               return (
                   <li className='flex items-center gap-x-4 mb-3' key={map["ID"]}>
                     <button className='bg-accent h-8 w-8 rounded-md group' onClick={() => {

@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router'
 import Header from './components/Header'
 import HabitList from './components/HabitList'
 import Calendar from './components/Calendar'
+import HabitPageRender from './HabitPageRender'
 
 
 function App() {
@@ -227,10 +228,11 @@ return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={
-      <>
+      <> 
         <Header 
         deleteHabitsToggle={deleteHabitsToggle}
         showIcons={true}/>
+
         <HabitList 
         habit={habit} 
         setHabit={setHabit} 
@@ -242,14 +244,34 @@ return (
         completeHabit={completeHabit}
         deleteHabit={deleteHabit}
         removeHabit={removeHabit}
-        monthKey={monthKey}
-        />
+        monthKey={monthKey}/>
       </>
-      } />
+       } />
+
       <Route path="calendar" element={
         <>
           <Header showIcons={false}/>
           <Calendar habitsObject={habitsObject}/>
+        </>
+      }/>
+      
+      <Route path="/:date" element={
+        <>
+          <Header
+          showIcons={true}
+          deleteHabitsToggle={deleteHabitsToggle}/>
+          <HabitPageRender
+          habit={habit} 
+          setHabit={setHabit} 
+          currentDate={currentDate} 
+          openAddHabit={openAddHabit} 
+          addHabitBtn={addHabitBtn} 
+          addHabit={addHabit} 
+          habitsObject={habitsObject} 
+          completeHabit={completeHabit}
+          deleteHabit={deleteHabit}
+          removeHabit={removeHabit}
+          monthKey={monthKey}/>
         </>
       }/>
       </Routes>
