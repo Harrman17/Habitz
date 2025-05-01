@@ -3,13 +3,53 @@ import { useParams } from 'react-router'
 import HabitList from './components/HabitList'
 
 
-function HabitPageRender({ habit, setHabit, currentDate, openAddHabit, addHabit, addHabitBtn, habitsObject, completeHabit, deleteHabit, removeHabit, monthKey }) {
+function HabitPageRender({ habit, setHabit, currentDate, openAddHabit, addHabitBtn, habitsObject, completeHabit, deleteHabit, removeHabit, setHabitID, setHabitsObject, habitID }) {
 
     const { date } = useParams()
-    const formattedDate = date.replace(/-/g, "/") // changing it back to the original date for use within the obj
+    const formattedDate = date?.replace(/-/g, "/")
+    const monthKey = formattedDate?.split("/").slice(1).join("/")
+    const fullDate = formattedDate
 
-    const [day, month, year] = formattedDate.split("/")
-    monthKey = `${month}/${year}`
+    function addHabit() {
+
+      if (!habit.trim()) {
+        return
+      }
+  
+  
+    const newHabitID = habitID + 1;
+    setHabitID(newHabitID)
+    
+      const habitObject = {
+        ID: habitID,
+        habit_name: habit,
+        status: false
+      }
+  
+  
+      if (!habitsObject[monthKey]) {
+        habitsObject[monthKey] = {}
+      }
+  
+      if (!habitsObject[monthKey][fullDate]) {
+        habitsObject[monthKey][fullDate] = []
+      }
+  
+      // if theres no monthKey for the current month then we create one, same with the date key
+  
+      setHabitsObject(prev => {
+        const updated = { ...prev }
+  
+        updated[monthKey] = {
+          ...prev[monthKey] || {},
+          [fullDate]: [...(prev[monthKey]?.[fullDate] || []), habitObject]
+        }
+      
+        return updated
+      })
+    
+      setHabit("")
+    }
 
   return (
     <HabitList 
