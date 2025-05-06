@@ -6,4 +6,9 @@
   --color-accent: #DFDFDF;
   --color-test: #FF0000;
   --color-darkaccent: #262626;
-}
+  --color-lvl0: #E0E0E0;
+  --color-lvl1: #B0B0B0;
+  --color-lvl2: #808080;
+  --color-lvl3: #505050;
+  --color-lvl4: #2F2F2F;
+  }

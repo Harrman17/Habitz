@@ -3,7 +3,7 @@ import { useParams } from 'react-router'
 import HabitList from './components/HabitList'
 
 
-function HabitPageRender({ habit, setHabit, currentDate, openAddHabit, addHabitBtn, habitsObject, completeHabit, deleteHabit, removeHabit, setHabitID, setHabitsObject, habitID }) {
+function HabitPageRender({ habit, setHabit, currentDate, openAddHabit, addHabitBtn, habitsObject, deleteHabit, setHabitID, setHabitsObject, habitID }) {
 
     const { date } = useParams()
     const formattedDate = date?.replace(/-/g, "/")
@@ -50,6 +50,37 @@ function HabitPageRender({ habit, setHabit, currentDate, openAddHabit, addHabitB
     
       setHabit("")
     }
+
+    function completeHabit(ID) { 
+      setHabitsObject(prev => {
+        const updated = { ...prev }
+  
+        updated[monthKey] = {
+          ...prev[monthKey],
+          [currentDate]: prev[monthKey][currentDate].map(habit => {
+            return habit.ID === ID ? { ...habit, status: !habit.status } : habit
+          })
+        }
+        return updated
+      })
+    }
+
+    function removeHabit(ID) {
+      if (deleteHabit) {
+        setHabitsObject(prev => {
+          const updated = { ...prev }
+  
+          updated[monthKey] = {
+            ...prev[monthKey],
+            [currentDate]: prev[monthKey][currentDate].filter(habit => habit.ID !== ID)
+          }
+  
+          return updated
+  
+        })
+      }
+    }
+
 
   return (
     <HabitList 
